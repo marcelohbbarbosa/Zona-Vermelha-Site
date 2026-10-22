@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zona Vermelha – Mapa colaborativo de zonas de risco</title>
+<meta name="description" content="Aplicativo mobile para registrar e consultar zonas de risco por geolocalização. Projeto de TCC – Técnico em Desenvolvimento de Sistemas.">
+<link rel="icon" type="image/png" href="icon-512.png">
+<link rel="apple-touch-icon" href="icon-512.png">
+<meta name="theme-color" content="#b32000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f3f0; --surface:#ffffff; --ink:#1c1917; --muted:#5f5953; --line:#e0dcd6;
+  --red:#b32000; --red-ink:#ffffff; --red-soft:#f6dccf; --brand:#b32000;
+  --font:"Fredoka",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#161413; --surface:#211e1c; --ink:#f2eeea; --muted:#a8a099; --line:#34302d; --red:#ff6b4a; --red-ink:#1a0600; --red-soft:#3a2018; --brand:#b32000;}
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.55;font-size:17px;-webkit-text-size-adjust:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px;border-radius:6px}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+
+header.top{padding:12px 0;background:var(--brand);color:#fff}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center}
+.brand{font-weight:600;font-size:1.35rem;text-decoration:none;display:flex;align-items:center;gap:8px;letter-spacing:-.01em}
+.brand img{display:block;height:38px;width:auto}
+nav a{font-size:15px;color:#fff;opacity:.9;text-decoration:none;margin-left:16px}
+nav a:hover{opacity:1;text-decoration:underline}
+header :focus-visible{outline-color:#fff}
+
+.hero{padding:36px 0 56px;position:relative;overflow:hidden}
+.zones{position:absolute;right:-120px;top:-60px;width:420px;height:420px;pointer-events:none;opacity:.9}
+.zones i{position:absolute;inset:0;margin:auto;border-radius:50%;border:2px solid var(--red)}
+.zones i:nth-child(1){width:100%;height:100%;opacity:.12}
+.zones i:nth-child(2){width:72%;height:72%;opacity:.22}
+.zones i:nth-child(3){width:44%;height:44%;opacity:.4}
+.zones i:nth-child(4){width:16%;height:16%;background:var(--red);border:0;opacity:1}
+.hero .wrap{position:relative}
+h1{font-size:clamp(2.6rem,11vw,4.4rem);line-height:1;font-weight:700;letter-spacing:-.02em;margin-bottom:18px}
+.lead{font-size:1.15rem;color:var(--muted);max-width:30em;margin-bottom:28px}
+
+.btns{display:flex;flex-direction:column;gap:12px;max-width:380px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 22px;border-radius:14px;font:inherit;font-weight:700;text-decoration:none;border:2px solid var(--ink);cursor:pointer;transition:transform .12s}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--red);border-color:var(--red);color:var(--red-ink)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn[aria-disabled="true"]{opacity:.55;cursor:not-allowed;border-style:dashed}
+.btn small{font-weight:500;opacity:.85}
+.note{font-size:.88rem;color:var(--muted);margin-top:14px;max-width:380px}
+
+section{padding:44px 0;border-top:1px solid var(--line)}
+h2{font-size:1.7rem;letter-spacing:-.02em;margin-bottom:18px;line-height:1.15}
+.steps{list-style:none;padding:0;display:grid;gap:14px}
+.steps li{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px}
+.steps b{grid-row:span 2;width:34px;height:34px;border-radius:50%;background:var(--red-soft);color:var(--red);display:grid;place-items:center}
+.steps strong{font-size:1.05rem}
+.steps span{color:var(--muted);font-size:.97rem}
+dl{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;font-size:.98rem}
+dt{color:var(--muted)}
+dd{font-weight:600}
+.tags{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin-top:6px}
+.tags li{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:999px;font-size:.92rem}
+footer{padding:32px 0 48px;border-top:1px solid var(--line);color:var(--muted);font-size:.92rem}
+footer a{color:var(--ink)}
+
+@media (min-width:720px){
+  .btns{flex-direction:row;max-width:none}
+  .btn{flex:0 0 auto}
+  .zones{right:-40px;width:520px;height:520px}
+}
+@media (max-width:560px){nav{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="Zona Vermelha"><img src="logotipo.png" alt="Zona Vermelha" height="38"></a>
+    <nav>
+      <a href="#baixar">Baixar</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#tcc">O TCC</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="zones" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="wrap">
+      <h1>Saiba onde<br>o risco está.</h1>
+      <p class="lead">Aplicativo que mostra no mapa as zonas de risco registradas por outras pessoas e permite que você registre e comente as suas.</p>
+      <div class="btns">
+        <a class="btn primary" href="#baixar">Baixar o app</a>
+        <a class="btn ghost" href="#como-funciona">Ver como funciona</a>
+      </div>
+    </div>
+  </div>
+
+  <section id="baixar">
+    <div class="wrap">
+      <h2>Baixar o aplicativo</h2>
+      <div class="btns">
+        <!-- TODO: coloque o arquivo em downloads/zona-vermelha.apk ou troque o href pelo link do release no GitHub -->
+        <a class="btn primary" href="downloads/zona-vermelha.apk" download>
+          Baixar APK <small>Android</small>
+        </a>
+        <!-- TODO: quando publicar, troque href="#" pelo link da Play Store e remova aria-disabled -->
+        <a class="btn ghost" href="#" aria-disabled="true" onclick="return false;">
+          Google Play <small>em breve</small>
+        </a>
+      </div>
+      <p class="note">Para instalar o APK, o Android pode pedir para permitir a instalação de apps de fontes desconhecidas nas configurações do navegador usado no download.</p>
+      <dl style="margin-top:22px">
+        <dt>Versão</dt><dd>1.0.0</dd>
+        <dt>Sistema</dt><dd>Android</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section id="como-funciona">
+    <div class="wrap">
+      <h2>Como funciona</h2>
+      <ol class="steps">
+        <li><b>1</b><strong>Consulte o mapa</strong><span>Veja as zonas de risco registradas perto de você.</span></li>
+        <li><b>2</b><strong>Visualize uma zona</strong><span>Veja no mapa as informações e o tipo de risco registrado.</span></li>
+        <li><b>3</b><strong>Comente</strong><span>Acrescente informações em zonas já registradas.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="tcc">
+    <div class="wrap">
+      <h2>Sobre o TCC</h2>
+      <dl>
+        <dt>Curso</dt><dd>Técnico em Desenvolvimento de Sistemas</dd>
+        <dt>Escola</dt><dd>Etec Praia Grande</dd>
+        <dt>Integrantes</dt><dd>Daniel Silva, Felipe Teixeira, Guilherme, Lucas Liria e Marcelo Barbosa</dd>
+        <dt>Ano</dt><dd>2026</dd>
+      </dl>
+      <h2 style="margin-top:32px;font-size:1.3rem">Tecnologias</h2>
+      <ul class="tags">
+        <li>React Native</li>
+        <li>Expo</li>
+        <li>PostgreSQL</li>
+        <li>PostGIS</li>
+        <li>Git e GitHub</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Projeto acadêmico. Código-fonte no <a href="https://github.com/marcelohbbarbosa/Zona-Vermelha">GitHub</a>.</p>
+  </div>
+</footer>
+
+</body>
+</html>
