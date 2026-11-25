@@ -7,44 +7,36 @@
 <meta name="description" content="Aplicativo mobile para registrar e consultar zonas de risco por geolocalização. Projeto de TCC – Técnico em Desenvolvimento de Sistemas.">
 <link rel="icon" type="image/png" href="icon-512.png">
 <link rel="apple-touch-icon" href="icon-512.png">
-<meta name="theme-color" content="#b32000">
+<meta name="theme-color" content="#d52f32">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f5f3f0; --surface:#ffffff; --ink:#1c1917; --muted:#5f5953; --line:#e0dcd6;
-  --red:#b32000; --red-ink:#ffffff; --red-soft:#f6dccf; --brand:#b32000;
-  --font:"Fredoka",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-}
-@media (prefers-color-scheme:dark){
-  :root{--bg:#161413; --surface:#211e1c; --ink:#f2eeea; --muted:#a8a099; --line:#34302d; --red:#ff6b4a; --red-ink:#1a0600; --red-soft:#3a2018; --brand:#b32000;}
+  --bg:#f7f7fc; --surface:#ffffff; --showcase:#e9eaf0; --ink:#191c2b; --muted:#5e6270; --line:#dedee8;
+  --red:#d52f32; --red-ink:#ffffff; --red-soft:#fbe2e3; --brand:#d52f32; --map:#092633;
+  --font:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --display:"Dynamo","IBM Plex Serif",Georgia,serif;
 }
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.55;font-size:17px;-webkit-text-size-adjust:100%}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--red);outline-offset:3px;border-radius:6px}
-.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
 
-header.top{padding:12px 0;background:var(--brand);color:#fff}
-header.top .wrap{display:flex;justify-content:space-between;align-items:center}
+header.top{padding:14px 0;background:var(--brand);color:#fff;border-bottom:1px solid #ffffff20}
+header.top .wrap{display:flex;justify-content:center;align-items:center}
 .brand{font-weight:600;font-size:1.35rem;text-decoration:none;display:flex;align-items:center;gap:8px;letter-spacing:-.01em}
 .brand img{display:block;height:38px;width:auto}
-nav a{font-size:15px;color:#fff;opacity:.9;text-decoration:none;margin-left:16px}
-nav a:hover{opacity:1;text-decoration:underline}
 header :focus-visible{outline-color:#fff}
 
-.hero{padding:36px 0 56px;position:relative;overflow:hidden}
-.zones{position:absolute;right:-120px;top:-60px;width:420px;height:420px;pointer-events:none;opacity:.9}
-.zones i{position:absolute;inset:0;margin:auto;border-radius:50%;border:2px solid var(--red)}
-.zones i:nth-child(1){width:100%;height:100%;opacity:.12}
-.zones i:nth-child(2){width:72%;height:72%;opacity:.22}
-.zones i:nth-child(3){width:44%;height:44%;opacity:.4}
-.zones i:nth-child(4){width:16%;height:16%;background:var(--red);border:0;opacity:1}
+.hero{padding:84px 0 92px;position:relative;overflow:hidden;background:var(--bg);color:var(--ink)}
+.hero .wrap{max-width:1160px}
 .hero .wrap{position:relative}
-h1{font-size:clamp(2.6rem,11vw,4.4rem);line-height:1;font-weight:700;letter-spacing:-.02em;margin-bottom:18px}
-.lead{font-size:1.15rem;color:var(--muted);max-width:30em;margin-bottom:28px}
+h1{font-family:var(--display);font-size:clamp(2.8rem,6vw,5rem);line-height:1.02;font-weight:700;letter-spacing:-.03em;margin-bottom:20px;max-width:700px;color:var(--red)}
+.lead{font-size:1.2rem;color:var(--muted);max-width:34em;margin-bottom:0}
+.eyebrow{color:var(--red);font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.13em;margin-bottom:18px}
 
 .btns{display:flex;flex-direction:column;gap:12px;max-width:380px}
 .btn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 22px;border-radius:14px;font:inherit;font-weight:700;text-decoration:none;border:2px solid var(--ink);cursor:pointer;transition:transform .12s}
@@ -56,7 +48,14 @@ h1{font-size:clamp(2.6rem,11vw,4.4rem);line-height:1;font-weight:700;letter-spac
 .note{font-size:.88rem;color:var(--muted);margin-top:14px;max-width:380px}
 
 section{padding:44px 0;border-top:1px solid var(--line)}
-h2{font-size:1.7rem;letter-spacing:-.02em;margin-bottom:18px;line-height:1.15}
+#telas{background:var(--showcase)}
+h2{font-family:"IBM Plex Serif",Georgia,serif;font-size:clamp(1.8rem,3vw,2.4rem);letter-spacing:-.03em;margin-bottom:12px;line-height:1.15;color:var(--red)}
+.section-intro{color:var(--muted);max-width:600px;margin-bottom:28px}
+.screens{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.screen{overflow:hidden;border:1px solid var(--line);border-radius:20px;background:var(--surface);box-shadow:0 12px 32px #14233012}
+.screen img{display:block;width:100%;height:390px;object-fit:cover;object-position:top;background:var(--map)}
+.screen figcaption{padding:14px 16px 17px;font-weight:600;color:var(--red)}
+.screen figcaption span{display:block;color:var(--muted);font-size:.88rem;font-weight:400;margin-top:3px}
 .steps{list-style:none;padding:0;display:grid;gap:14px}
 .steps li{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px}
 .steps b{grid-row:span 2;width:34px;height:34px;border-radius:50%;background:var(--red-soft);color:var(--red);display:grid;place-items:center}
@@ -73,9 +72,9 @@ footer a{color:var(--ink)}
 @media (min-width:720px){
   .btns{flex-direction:row;max-width:none}
   .btn{flex:0 0 auto}
-  .zones{right:-40px;width:520px;height:520px}
 }
-@media (max-width:560px){nav{display:none}}
+@media (max-width:900px){.screens{grid-template-columns:repeat(2,minmax(0,1fr))}.screen img{height:440px}}
+@media (max-width:560px){.hero{padding:64px 0 70px}.wrap{padding:0 18px}.screens{grid-template-columns:1fr 1fr;gap:10px}.screen{border-radius:14px}.screen img{height:300px}.screen figcaption{padding:11px;font-size:.9rem}.screen figcaption span{font-size:.78rem}section{padding:38px 0}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
 </style>
 </head>
@@ -84,26 +83,32 @@ footer a{color:var(--ink)}
 <header class="top">
   <div class="wrap">
     <a class="brand" href="#" aria-label="Zona Vermelha"><img src="logotipo.png" alt="Zona Vermelha" height="38"></a>
-    <nav>
-      <a href="#baixar">Baixar</a>
-      <a href="#como-funciona">Como funciona</a>
-      <a href="#tcc">O TCC</a>
-    </nav>
   </div>
 </header>
 
 <main>
   <div class="hero">
-    <div class="zones" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <div class="wrap">
+      <p class="eyebrow">Zona Vermelha · segurança colaborativa</p>
       <h1>Saiba onde<br>o risco está.</h1>
       <p class="lead">Aplicativo que mostra no mapa as zonas de risco registradas por outras pessoas e permite que você registre e comente as suas.</p>
-      <div class="btns">
-        <a class="btn primary" href="#baixar">Baixar o app</a>
-        <a class="btn ghost" href="#como-funciona">Ver como funciona</a>
-      </div>
     </div>
   </div>
+
+  <section id="telas">
+    <div class="wrap">
+      <h2>Conheça o aplicativo</h2>
+      <p class="section-intro">Um olhar rápido pelas principais ferramentas do Zona Vermelha: mapa colaborativo, avaliações da comunidade e recursos para explorar a cidade.</p>
+      <div class="screens">
+        <figure class="screen"><img src="images/app/mapa.jpg" alt="Mapa do aplicativo com zonas de risco sinalizadas" loading="lazy"><figcaption>Mapa colaborativo<span>Visualize regiões e alertas próximos.</span></figcaption></figure>
+        <figure class="screen"><img src="images/app/regiao.jpg" alt="Detalhes e avaliações de uma região no mapa" loading="lazy"><figcaption>Informações da região<span>Consulte relatos e avaliações da comunidade.</span></figcaption></figure>
+        <figure class="screen"><img src="images/app/avaliacao.jpg" alt="Formulário para avaliar uma região" loading="lazy"><figcaption>Avaliações<span>Compartilhe condições e relatos do local.</span></figcaption></figure>
+        <figure class="screen"><img src="images/app/rotas.jpg" alt="Tela para avaliar e consultar avaliações de regiões" loading="lazy"><figcaption>Avaliar e ver avaliações<span>Consulte os relatos da comunidade e compartilhe sua avaliação.</span></figcaption></figure>
+        <figure class="screen"><img src="images/app/rota-mapa.jpg" alt="Rota exibida no mapa com alertas próximos" loading="lazy"><figcaption>Rotas no mapa<span>Veja o caminho junto aos alertas da região.</span></figcaption></figure>
+        <figure class="screen"><img src="images/app/pontos-turisticos.jpg" alt="Lista de pontos turísticos da Baixada Santista" loading="lazy"><figcaption>Pontos turísticos<span>Encontre locais de interesse pela região.</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
 
   <section id="baixar">
     <div class="wrap">
@@ -119,7 +124,7 @@ footer a{color:var(--ink)}
       </div>
       <p class="note">Para instalar o APK, o Android pode pedir para permitir a instalação de apps de fontes desconhecidas nas configurações do navegador usado no download.</p>
       <dl style="margin-top:22px">
-        <dt>Versão</dt><dd>1.0.0</dd>
+        <dt>Versão</dt><dd>1.1.2</dd>
         <dt>Sistema</dt><dd>Android</dd>
       </dl>
     </div>
@@ -142,7 +147,7 @@ footer a{color:var(--ink)}
       <dl>
         <dt>Curso</dt><dd>Técnico em Desenvolvimento de Sistemas</dd>
         <dt>Escola</dt><dd>Etec Praia Grande</dd>
-        <dt>Integrantes</dt><dd>Daniel Silva, Felipe Teixeira, Guilherme Sousa Gomes, Lucas Liria e Marcelo Barbosa</dd>
+        <dt>Integrantes</dt><dd>Daniel Silva, Felipe Teixeira, Guilherme Sousa Gomes, Lucas Liria e Marcelo Henrique</dd>
         <dt>Ano</dt><dd>2026</dd>
       </dl>
       <h2 style="margin-top:32px;font-size:1.3rem">Tecnologias</h2>
